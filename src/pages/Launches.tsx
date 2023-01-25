@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Spin, Button } from 'antd';
+import { useState, useEffect } from 'react';
+import { Spin } from 'antd';
 import axios from 'axios';
+import SingleCard from '../components/SingleCard';
 
-interface Launch {
-  flight_number: number;
-  mission_name: string;
-  launch_year: string;
-  launch_success: boolean;
-  links : {mission_patch_small:string}
-}
 
 const Launches = () => {
-    const [launches, setLaunches] = useState<Launch[]>([]);
+    const [launches, setLaunches] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,18 +25,12 @@ const Launches = () => {
   if (loading) {
     return <Spin />;
   }
-
   return (
-    <div className='grid grid-cols-3 gap-12 mt-10'>
-      {launches.map((launch) => (
-        <Card title="Default size card" extra={<img src={launch.links.mission_patch_small} alt="logo"/>} style={{ width: 300 }}>
-          <p>Launch Year: {launch.launch_year}</p>
-          <p>
-            Launch Success:
-            {launch.launch_success ? 'Yes' : 'No'}
-          </p>
-          <Button>See Details</Button>
-      </Card>
+    <div className='grid grid-cols-3 ml-10 gap-4 mt-10'>
+      {launches.map((launch, index) => (
+        <div key={index}>
+            <SingleCard data={launch} />
+        </div>
       ))}
     </div>
   )

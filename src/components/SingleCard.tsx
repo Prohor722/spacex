@@ -1,0 +1,42 @@
+import { Card,Button, } from 'antd';
+import notFoundImage from '../assets/images/notfound.png';
+
+type SingleCardProps = {
+  data: {
+    flight_number: number;
+    rocket: {
+        rocket_name: string;
+    };
+    mission_name: string;
+    launch_year: string;
+    launch_success: boolean;
+    links: {
+        mission_patch_small: string;
+        mission_name: string;
+    };
+}
+}
+
+const SingleCard = ({data}:SingleCardProps) => {
+
+    const { Meta } = Card;
+    
+    const checkImg = (img:string):string =>{
+        return img? img : notFoundImage ;
+    }
+
+    return (
+    <Card title="Default size card" extra={<img src={checkImg(data.links.mission_patch_small)} alt="logo"/>} style={{ width: 300 }}>
+                <Meta title={'Mission Name: '+data.mission_name}/>
+                <p>Rocket Name: {data.rocket.rocket_name}</p>
+                <p>Launch Year: {data.launch_year}</p>
+                <p>
+                    Launch Success:
+                    {data.launch_success ? 'Yes' : 'No'}
+                </p>
+                <Button>See Details</Button>
+            </Card>
+  )
+}
+
+export default SingleCard
