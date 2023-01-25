@@ -4,7 +4,7 @@ import Launches from './pages/Launches';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <p className='bg-orange-200'>Hello there!</p>
       <Launches />
       <Button>Conda</Button>
