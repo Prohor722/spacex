@@ -1,4 +1,5 @@
 import { Card,Button, } from 'antd';
+import {Link} from 'react-router-dom';
 import notFoundImage from '../assets/images/notfound.png';
 
 type SingleCardProps = {
@@ -34,7 +35,9 @@ const SingleCard = ({data}:SingleCardProps) => {
                     Launch Success:
                     {data.launch_success ? 'Yes' : 'No'}
                 </p>
-                <Button>See Details</Button>
+                <Button>
+                    <Link to={'/launches/'+data.flight_number}>See Details</Link>
+                </Button>
             </Card>
   )
 }
