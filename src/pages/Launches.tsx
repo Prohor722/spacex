@@ -46,8 +46,19 @@ const Launches = () => {
     const dataMonth = date.getMonth()+1;
 
     return  ((thisMonth-dataMonth===1)? true : (thisMonth===1 && dataMonth===12) && checkLastYear(data.launch_year))
-
   };
+
+  const checkLastWeek = (date:string) => {
+    
+    const givenDate = parseInt((new Date(date).getTime() / 1000).toFixed(0));
+    const currentDate = parseInt((new Date().getTime() / 1000).toFixed(0))
+    const sevenDaysInSeconds = 60*60*24*7;
+
+    const lastWeekEndingInSeconds = currentDate - sevenDaysInSeconds;
+    const lastWeekStartingInSeconds = lastWeekEndingInSeconds - sevenDaysInSeconds;
+
+    return givenDate>=lastWeekStartingInSeconds && givenDate<=lastWeekEndingInSeconds;
+ };
 
   const filterDataByYear = () =>{
     setSearchData("");
@@ -57,9 +68,17 @@ const Launches = () => {
     setSearchData("");
     setFilterData({status:true,type:"byMonth"});
   }
-  const filterLaunchStatus = () =>{
+  const filterDatabyLastWeek = () =>{
     setSearchData("");
-    setFilterData({status:true,type:"byLaunchStatus"});
+    setFilterData({status:true,type:"byWeek"});
+  }
+  const filterLaunchSuccess = () =>{
+    setSearchData("");
+    setFilterData({status:true,type:"byLaunchSuccess"});
+  }
+  const filterLaunchFailed = () =>{
+    setSearchData("");
+    setFilterData({status:true,type:"byLaunchFailed"});
   }
 
   const filteredData = ():any =>{
@@ -72,8 +91,16 @@ const Launches = () => {
       const values = data?.filter(d=>checkLastMonth(d));
       return values;
     }
-    else if(filterData.type==="byLaunchStatus"){
+    else if(filterData.type==="byWeek"){
+      const values = data?.filter(d=>checkLastWeek(d.launch_date_local));
+      return values;
+    }
+    else if(filterData.type==="byLaunchSuccess"){
       const values = data?.filter(d=>d.launch_success);
+      return values;
+    }
+    else if(filterData.type==="byLaunchFailed"){
+      const values = data?.filter(d=>!d.launch_success);
       return values;
     }
 
@@ -88,9 +115,11 @@ const Launches = () => {
       enterButton="Search"
       size="large"
       onSearch={onSearch}/>
-      <button className='bg-yellow-200 mt-20' onClick={filterDataByYear}>Last Year</button>
-      <button className='bg-yellow-200 mt-20' onClick={filterDataByMonth}>Last Month</button>
-      <button className='bg-green-400 mt-20' onClick={filterLaunchStatus}>Launch Successfull</button>
+      <button className='bg-yellow-200 mt-20 p-2 m-4' onClick={filterDataByYear}>Last Year</button>
+      <button className='bg-yellow-200 mt-20 p-2 m-4' onClick={filterDataByMonth}>Last Month</button>
+      <button className='bg-blue-400 mt-20 p-2 m-4' onClick={filterDatabyLastWeek}>Last Week</button>
+      <button className='bg-green-400 mt-20 p-2 m-4' onClick={filterLaunchSuccess}>Launch Successfull</button>
+      <button className='bg-red-400 mt-20 p-2 m-4' onClick={filterLaunchFailed}>Launch Failed</button>
 
 
 

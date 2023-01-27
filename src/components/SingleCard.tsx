@@ -23,14 +23,9 @@ const SingleCard = ({data}:SingleCardProps) => {
     const { Meta } = Card;
     
     const checkImg = (img:string):string =>{
-        return img? checkValidImageLink(img) : notFoundImage ;
+        return img? img : notFoundImage ;
     }
 
-    const checkValidImageLink = (link:string):string =>{
-        const test = <img src={link} />;
-        // console.log(test.props.src);
-        return test.props.src?  link : notFoundImage;
-    }
 
     return (
         <Card title="Default size card" extra={<img src={checkImg(data.links.mission_patch_small)} alt="logo"/>} style={{ width: 300 }}>
