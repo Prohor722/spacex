@@ -3,19 +3,19 @@ import {Link} from 'react-router-dom';
 import notFoundImage from '../assets/images/notfound.png';
 
 type SingleCardProps = {
-  data: {
-    flight_number: number;
-    rocket: {
-        rocket_name: string;
-    };
-    mission_name: string;
-    launch_year: string;
-    launch_success: boolean;
-    links: {
-        mission_patch_small: string;
+    data: {
+        flight_number: number;
+        rocket: {
+            rocket_name: string;
+        };
         mission_name: string;
-    };
-}
+        launch_year: string;
+        launch_success: boolean;
+        links: {
+            mission_patch_small: string;
+            mission_name: string;
+        };
+    }
 }
 
 const SingleCard = ({data}:SingleCardProps) => {
