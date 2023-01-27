@@ -1,53 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Spin } from 'antd';
-import axios from 'axios';
 import SingleCard from '../components/SingleCard';
 import { useGetAllLauncherQuery } from '../services/launchers'
 import { Input } from 'antd';
 
-
-type Launchers ={
-    flight_number: number;
-    rocket: {
-        rocket_name: string;
-    };
-    mission_name: string;
-    launch_year: string;
-    launch_success: boolean;
-    links: {
-        mission_patch_small: string;
-        mission_name: string;
-    };
-  };
-type singleLauncher = {
-    links:{
-        mission_patch:string,
-        mission_patch_small:string
-        }
-}
-
 const Launches = () => {
-  const [launches, setLaunches] = useState<Launchers[]>([]);
   const [searchData, setSearchData] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const { data, error, isLoading } = useGetAllLauncherQuery([]);
   const { Search } = Input;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await axios.get('https://api.spacexdata.com/v3/launches');
-        setLaunches(result.data);
-      } catch (error) {
-        console.error(error);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <Spin />;
   }
 
@@ -65,8 +27,14 @@ const Launches = () => {
 
     <div className='grid grid-cols-3 gap-4 mt-10'>
       {
+        error?
+
+        <p>Some this went wrong!!</p>
+        
+        :
+
         (searchData)? 
-            launches.filter(items=>
+            data && data.filter(items=>
             items.rocket.rocket_name.toLowerCase().includes(searchData.toLowerCase())).map((item,index)=>
             <SingleCard data={item} key={index}/>
             )

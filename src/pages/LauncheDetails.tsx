@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
 import {useParams} from 'react-router-dom';
 import { Image, Space } from 'antd';
+import { useGetLauncherQuery } from "../services/launchers";
 
-type Data = {
-    links:{
-        mission_patch:string,
-        mission_patch_small:string
-        }
-}
 
 const LauncheDetails = () => {
-    const [ data, setData ] = useState<Data>();
-    const { id } = useParams();
 
-    useEffect(()=>{
-        fetch(`https://api.spacexdata.com/v3/launches/2${id}`)
-        .then(res=>res.json())
-        .then(d=>setData(d))
-    },[]);
+  const { id } = useParams();
+  const { data, error, isLoading } = useGetLauncherQuery(`${id}`);
+
 
     const check = (d:any) =>{
         const test = <img src={d} />;
