@@ -28,7 +28,7 @@ const SingleCard = ({data}:SingleCardProps) => {
 
     const checkValidImageLink = (link:string):string =>{
         const test = <img src={link} />;
-        console.log(test.props.src);
+        // console.log(test.props.src);
         return test.props.src?  link : notFoundImage;
     }
 
