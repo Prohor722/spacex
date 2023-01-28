@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import SingleCard from '../components/SingleCard';
 import { useGetAllLauncherQuery } from '../services/launchers'
 import { Input } from 'antd';
@@ -23,16 +23,21 @@ const Launches = () => {
   const [searchData, setSearchData] = useState<string>("");
   const [ filterData, setFilterData] = useState({status:false, type:""})
   const { data, error, isLoading } = useGetAllLauncherQuery([]);
-  const { Search } = Input;
+  // const { Search } = Input;
 
   if (isLoading) {
-    return <Spin />;
+    return <Spin className='mt-40'/>;
   }
 
   const onSearch = (value: string) => {
     setSearchData(value);
     setFilterData({status:false, type:""})
   };
+
+  const reset = () =>{
+    setSearchData("");
+    setFilterData({status:false, type:""})
+  }
 
   const checkLastYear = (year:string):boolean =>{
     const thisYear:number =  new Date().getFullYear();
@@ -109,21 +114,26 @@ const Launches = () => {
 
   return (
     <div className='ml-10 mt-10'>
-      <Search
-      placeholder="input search text"
-      allowClear
-      enterButton="Search"
-      size="large"
-      onSearch={onSearch}/>
-      <button className='bg-yellow-200 mt-20 p-2 m-4' onClick={filterDataByYear}>Last Year</button>
-      <button className='bg-yellow-200 mt-20 p-2 m-4' onClick={filterDataByMonth}>Last Month</button>
-      <button className='bg-blue-400 mt-20 p-2 m-4' onClick={filterDatabyLastWeek}>Last Week</button>
-      <button className='bg-green-400 mt-20 p-2 m-4' onClick={filterLaunchSuccess}>Launch Successfull</button>
-      <button className='bg-red-400 mt-20 p-2 m-4' onClick={filterLaunchFailed}>Launch Failed</button>
+      <div className='mx-20 mt-20'>
+        <Input.Search 
+        onSearch={onSearch}
+        allowClear
+        placeholder="Search by Rocket Name..."
+        />
+      </div>
+
+    <div className='mt-10'>
+      <Button className='px-10 mx-2' onClick={reset}>All</Button>
+      <Button className='bg-yellow-300 mx-2' onClick={filterDataByYear}>Last Year</Button>
+      <Button className='bg-orange-400 mx-2' onClick={filterDataByMonth}>Last Month</Button>
+      <Button className='bg-blue-400 mx-2' onClick={filterDatabyLastWeek}>Last Week</Button>
+      <Button className='bg-green-400 mx-2' onClick={filterLaunchSuccess}>Launch Successfull</Button>
+      <Button className='bg-red-400 mx-2' onClick={filterLaunchFailed}>Launch Failed</Button>
+    </div>
 
 
 
-    <div className='grid grid-cols-3 gap-4 mt-10'>
+    <div className='grid grid-cols-3 gap-4 ml-16 mr-10 mt-10'>
       {
         error?
 
